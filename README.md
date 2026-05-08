@@ -18,6 +18,41 @@ lotus.jobsearch.me -> Non-existent domain
 
 ## 推荐部署方式
 
+### GitHub Pages
+
+当前项目已经推送到：
+
+```text
+https://github.com/liucunyao/wangyecreate
+```
+
+仓库内已经包含：
+
+```text
+CNAME
+.github/workflows/pages.yml
+```
+
+如果访问 `https://liucunyao.github.io/wangyecreate/` 仍然是 404，需要在 GitHub 仓库中启用 Pages：
+
+1. 打开仓库 `Settings`。
+2. 进入 `Pages`。
+3. 在 `Build and deployment` 中选择 `GitHub Actions`。
+4. 回到 `Actions` 页面，运行或等待 `Deploy static site to GitHub Pages` 工作流完成。
+5. 部署成功后，再在 `jobsearch.me` 的 DNS 中添加：
+
+```text
+Type: CNAME
+Name: lotus
+Value: liucunyao.github.io
+```
+
+DNS 生效后访问：
+
+```text
+http://lotus.jobsearch.me
+```
+
 ### Cloudflare Pages
 
 1. 将本目录上传到 Git 仓库。
