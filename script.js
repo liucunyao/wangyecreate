@@ -230,7 +230,67 @@ const jobs = [
     requirements: ["熟悉 C/C++", "了解 Linux 或 RTOS", "有串口、CAN、TCP/IP 等通信经验"]
   },
   {
-    id: "mkt-009",
+    id: "materials-rd-009",
+    title: "材料研发工程师",
+    company: "曜石新材",
+    city: "上海",
+    district: "浦东新区",
+    education: "master",
+    minExperience: 0,
+    maxExperience: 5,
+    salaryMin: 18,
+    salaryMax: 34,
+    industry: "智能制造",
+    companySize: "100-499人",
+    type: "全职",
+    majors: ["materials", "chemistry", "mechanical"],
+    skills: ["材料表征", "实验设计", "数据分析", "沟通协作"],
+    preferences: ["技术成长", "稳定平台"],
+    responsibilities: ["负责高分子或复合材料配方验证", "设计实验方案并跟踪性能测试结果", "沉淀材料数据库和研发报告"],
+    requirements: ["材料科学相关专业背景", "熟悉常见材料测试与表征方法", "能独立完成实验记录和结果分析"]
+  },
+  {
+    id: "process-materials-010",
+    title: "材料工艺工程师",
+    company: "海川新能源",
+    city: "苏州",
+    district: "工业园区",
+    education: "bachelor",
+    minExperience: 1,
+    maxExperience: 6,
+    salaryMin: 16,
+    salaryMax: 28,
+    industry: "新能源",
+    companySize: "1000-9999人",
+    type: "全职",
+    majors: ["materials", "automation", "mechanical", "electrical"],
+    skills: ["工艺优化", "质量分析", "Excel", "沟通协作"],
+    preferences: ["稳定平台", "业务挑战"],
+    responsibilities: ["优化电池材料相关生产工艺", "分析良率、缺陷和异常批次", "推动工艺参数标准化和量产导入"],
+    requirements: ["材料、化工或工程制造相关专业", "理解生产现场质量和工艺问题", "具备跨部门沟通和问题闭环能力"]
+  },
+  {
+    id: "quality-materials-011",
+    title: "材料质量工程师",
+    company: "川行机器人",
+    city: "杭州",
+    district: "钱塘区",
+    education: "bachelor",
+    minExperience: 1,
+    maxExperience: 5,
+    salaryMin: 13,
+    salaryMax: 23,
+    industry: "智能制造",
+    companySize: "100-499人",
+    type: "全职",
+    majors: ["materials", "mechanical", "industrial-design"],
+    skills: ["质量分析", "供应商管理", "Excel", "沟通协作"],
+    preferences: ["稳定平台", "业务挑战"],
+    responsibilities: ["负责结构件、涂层或复合材料来料质量", "跟进供应商异常和改善措施", "维护检验标准和质量数据报表"],
+    requirements: ["材料或机械相关专业", "了解常见质量工具", "能推动供应商和内部团队完成问题闭环"]
+  },
+  {
+    id: "mkt-012",
     title: "增长运营",
     company: "微澜教育",
     city: "南京",
@@ -250,7 +310,7 @@ const jobs = [
     requirements: ["理解用户分层和转化漏斗", "有内容、社群或渠道运营经验", "能用数据复盘活动效果"]
   },
   {
-    id: "hr-010",
+    id: "hr-013",
     title: "招聘专员",
     company: "海川新能源",
     city: "武汉",
@@ -348,6 +408,7 @@ function getHardFilterStatus(job, profile) {
   if (profile.city !== "不限" && profile.city !== job.city && job.city !== "远程") failed.push("城市不匹配");
   if (profile.salaryMin && job.salaryMax < profile.salaryMin) failed.push("薪资低于期望");
   if (profile.industry !== "不限" && profile.industry !== job.industry) failed.push("行业不匹配");
+  if (!job.majors.includes(profile.major)) failed.push("专业方向不匹配");
   return failed;
 }
 
@@ -361,8 +422,10 @@ function calculateMatch(job, profile) {
   }
 
   if (job.majors.includes(profile.major)) {
-    score += 18;
+    score += 28;
     reasons.push("专业方向与岗位要求相关");
+  } else {
+    score -= 24;
   }
 
   if (profile.experience >= job.minExperience && profile.experience <= job.maxExperience) {
@@ -404,6 +467,7 @@ function renderJobs() {
     .sort((a, b) => {
       if (currentSort === "salary") return b.salaryMax - a.salaryMax;
       if (currentSort === "experience") return a.minExperience - b.minExperience;
+      if (a.hardFailed.length !== b.hardFailed.length) return a.hardFailed.length - b.hardFailed.length;
       return b.score - a.score;
     });
 
