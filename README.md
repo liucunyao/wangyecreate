@@ -30,16 +30,17 @@ https://github.com/liucunyao/wangyecreate
 
 ```text
 CNAME
-.github/workflows/pages.yml
+.nojekyll
 ```
 
 如果访问 `https://liucunyao.github.io/wangyecreate/` 仍然是 404，需要在 GitHub 仓库中启用 Pages：
 
 1. 打开仓库 `Settings`。
 2. 进入 `Pages`。
-3. 在 `Build and deployment` 中选择 `GitHub Actions`。
-4. 回到 `Actions` 页面，运行或等待 `Deploy static site to GitHub Pages` 工作流完成。
-5. 部署成功后，再在 `jobsearch.me` 的 DNS 中添加：
+3. 在 `Build and deployment` 中选择 `Deploy from a branch`。
+4. Branch 选择 `gh-pages`，目录选择 `/root`。
+5. 保存后等待 GitHub Pages 完成发布。
+6. 部署成功后，再在 `jobsearch.me` 的 DNS 中添加：
 
 ```text
 Type: CNAME
