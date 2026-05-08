@@ -298,6 +298,11 @@ const citySelect = document.querySelector("#city");
 const jobList = document.querySelector("#jobList");
 const template = document.querySelector("#jobCardTemplate");
 const matchCount = document.querySelector("#matchCount");
+const totalJobs = document.querySelector("#totalJobs");
+const hardMatchJobs = document.querySelector("#hardMatchJobs");
+const visibleJobs = document.querySelector("#visibleJobs");
+const averageScore = document.querySelector("#averageScore");
+const filterReadout = document.querySelector("#filterReadout");
 const profileInsight = document.querySelector("#profileInsight");
 const overallMeter = document.querySelector("#overallMeter");
 const keywordSearch = document.querySelector("#keywordSearch");
@@ -308,6 +313,7 @@ const closeDetail = document.querySelector("#closeDetail");
 
 let currentSort = "score";
 let scoredJobs = [];
+let currentProfile = null;
 
 function hydrateSelects() {
   majorSelect.innerHTML = Object.entries(majorGroups)
@@ -401,7 +407,7 @@ function renderJobs() {
       return b.score - a.score;
     });
 
-  matchCount.textContent = filtered.filter((job) => job.score >= 70 && !job.hardFailed.length).length;
+  updateStats(filtered, keyword);
   jobList.innerHTML = "";
 
   if (!filtered.length) {
@@ -430,7 +436,10 @@ function renderJobs() {
       : `${job.reasons.slice(0, 3).join("，")}。`;
     card.querySelector(".skill-row").innerHTML = job.skills.map((skill) => `<span>${skill}</span>`).join("");
     card.querySelector(".salary").textContent = `${job.salaryMin}K-${job.salaryMax}K`;
-    card.querySelector("button").addEventListener("click", () => showDetail(job.id));
+    card.querySelector("button").addEventListener("click", (event) => {
+      event.stopPropagation();
+      showDetail(job.id);
+    });
     article.addEventListener("click", (event) => {
       if (!event.target.closest("a")) showDetail(job.id);
     });
@@ -438,6 +447,24 @@ function renderJobs() {
   });
 
   jobList.appendChild(fragment);
+}
+
+function updateStats(filtered, keyword) {
+  const hardMatched = scoredJobs.filter((job) => !job.hardFailed.length);
+  const highMatched = filtered.filter((job) => job.score >= 70 && !job.hardFailed.length);
+  const average = filtered.length
+    ? Math.round(filtered.reduce((sum, job) => sum + job.score, 0) / filtered.length)
+    : 0;
+  const salaryText = currentProfile.salaryMin ? `${currentProfile.salaryMin}K+` : "不限薪资";
+  const skillText = currentProfile.skills.length ? currentProfile.skills.join("、") : "未选技能";
+  const keywordText = keyword ? `关键词：${keyword}` : "无关键词";
+
+  matchCount.textContent = highMatched.length;
+  totalJobs.textContent = jobs.length;
+  hardMatchJobs.textContent = hardMatched.length;
+  visibleJobs.textContent = filtered.length;
+  averageScore.textContent = `${average}%`;
+  filterReadout.textContent = `实时条件：${educationLabel[currentProfile.education]}，${majorSelect.options[majorSelect.selectedIndex].text}，${currentProfile.experience} 年经验，${currentProfile.city}，${salaryText}，${currentProfile.industry}，${keywordText}，技能：${skillText}`;
 }
 
 function updateInsights(profile) {
@@ -452,6 +479,7 @@ function updateInsights(profile) {
 
 function refreshMatches() {
   const profile = getProfile();
+  currentProfile = profile;
   scoredJobs = jobs.map((job) => calculateMatch(job, profile)).sort((a, b) => {
     if (a.hardFailed.length !== b.hardFailed.length) return a.hardFailed.length - b.hardFailed.length;
     return b.score - a.score;
@@ -524,6 +552,7 @@ form.addEventListener("submit", (event) => {
   refreshMatches();
 });
 form.addEventListener("change", refreshMatches);
+form.addEventListener("input", refreshMatches);
 keywordSearch.addEventListener("input", renderJobs);
 closeDetail.addEventListener("click", () => detailDialog.close());
 detailDialog.addEventListener("click", (event) => {

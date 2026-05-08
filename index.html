@@ -106,10 +106,10 @@
             </div>
           </fieldset>
 
-          <button type="submit" class="primary-action">
-            <span aria-hidden="true">⌕</span>
-            重新匹配
-          </button>
+          <div class="live-status" aria-live="polite">
+            <span aria-hidden="true"></span>
+            <p>筛选条件变更后会自动更新结果</p>
+          </div>
         </form>
       </section>
 
@@ -134,6 +134,27 @@
             <span id="overallMeter"></span>
           </div>
         </div>
+
+        <div class="stats-grid" aria-label="实时筛选数据">
+          <div class="stat-card">
+            <span id="totalJobs">0</span>
+            <p>职位样本</p>
+          </div>
+          <div class="stat-card">
+            <span id="hardMatchJobs">0</span>
+            <p>硬性条件通过</p>
+          </div>
+          <div class="stat-card">
+            <span id="visibleJobs">0</span>
+            <p>当前展示</p>
+          </div>
+          <div class="stat-card">
+            <span id="averageScore">0%</span>
+            <p>平均匹配度</p>
+          </div>
+        </div>
+
+        <div class="filter-readout" id="filterReadout" aria-live="polite"></div>
 
         <div class="toolbar" aria-label="职位筛选">
           <div class="segmented-control" id="sortControl">
