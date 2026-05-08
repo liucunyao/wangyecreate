@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>智岗匹配</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="profile-panel" aria-label="候选人信息">
+        <div class="brand-row">
+          <div class="brand-mark" aria-hidden="true">
+            <span></span>
+          </div>
+          <div>
+            <p class="eyebrow">Career Fit Engine</p>
+            <h1>智岗匹配</h1>
+          </div>
+        </div>
+
+        <form id="profileForm" class="profile-form">
+          <div class="field-group">
+            <label for="education">最高学历</label>
+            <select id="education" name="education">
+              <option value="associate">大专</option>
+              <option value="bachelor" selected>本科</option>
+              <option value="master">硕士</option>
+              <option value="doctor">博士</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label for="major">专业方向</label>
+            <select id="major" name="major"></select>
+          </div>
+
+          <div class="field-grid">
+            <div class="field-group">
+              <label for="experience">工作年限</label>
+              <input id="experience" name="experience" type="number" min="0" max="30" value="2" />
+            </div>
+
+            <div class="field-group">
+              <label for="city">期望城市</label>
+              <select id="city" name="city"></select>
+            </div>
+          </div>
+
+          <div class="field-grid">
+            <div class="field-group">
+              <label for="salaryMin">期望最低月薪</label>
+              <select id="salaryMin" name="salaryMin">
+                <option value="0">不限</option>
+                <option value="8">8K+</option>
+                <option value="12">12K+</option>
+                <option value="18">18K+</option>
+                <option value="25">25K+</option>
+                <option value="35">35K+</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label for="industry">目标行业</label>
+              <select id="industry" name="industry">
+                <option value="不限">不限</option>
+                <option value="企业服务 / SaaS">企业服务 / SaaS</option>
+                <option value="人工智能">人工智能</option>
+                <option value="新零售">新零售</option>
+                <option value="金融">金融</option>
+                <option value="智能制造">智能制造</option>
+                <option value="工业互联网">工业互联网</option>
+                <option value="游戏 / 文娱">游戏 / 文娱</option>
+                <option value="教育科技">教育科技</option>
+                <option value="新能源">新能源</option>
+              </select>
+            </div>
+          </div>
+
+          <fieldset>
+            <legend>技能标签</legend>
+            <div class="tag-picker" id="skillPicker">
+              <label><input type="checkbox" value="JavaScript" checked />JavaScript</label>
+              <label><input type="checkbox" value="TypeScript" />TypeScript</label>
+              <label><input type="checkbox" value="Python" checked />Python</label>
+              <label><input type="checkbox" value="SQL" />SQL</label>
+              <label><input type="checkbox" value="机器学习" />机器学习</label>
+              <label><input type="checkbox" value="PyTorch" />PyTorch</label>
+              <label><input type="checkbox" value="产品分析" />产品分析</label>
+              <label><input type="checkbox" value="原型设计" />原型设计</label>
+              <label><input type="checkbox" value="接口测试" />接口测试</label>
+              <label><input type="checkbox" value="C/C++" />C/C++</label>
+              <label><input type="checkbox" value="沟通协作" />沟通协作</label>
+              <label><input type="checkbox" value="Figma" />Figma</label>
+              <label><input type="checkbox" value="财务建模" />财务建模</label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>职业偏好</legend>
+            <div class="preference-grid">
+              <label><input type="checkbox" name="preference" value="技术成长" checked />技术成长</label>
+              <label><input type="checkbox" name="preference" value="数据驱动" />数据驱动</label>
+              <label><input type="checkbox" name="preference" value="业务挑战" />业务挑战</label>
+              <label><input type="checkbox" name="preference" value="稳定平台" />稳定平台</label>
+            </div>
+          </fieldset>
+
+          <button type="submit" class="primary-action">
+            <span aria-hidden="true">⌕</span>
+            重新匹配
+          </button>
+        </form>
+      </section>
+
+      <section class="results-panel" aria-label="匹配职位">
+        <div class="results-header">
+          <div>
+          <p class="eyebrow">Verified Search Workflow</p>
+          <h2>推荐职位</h2>
+          </div>
+          <div class="summary-card">
+            <span id="matchCount">0</span>
+            <p>个硬性条件匹配</p>
+          </div>
+        </div>
+
+        <div class="insight-strip" id="insightStrip">
+          <div>
+            <strong>匹配画像</strong>
+            <p id="profileInsight">正在分析你的学历、专业、经验与技能组合。</p>
+          </div>
+          <div class="meter" aria-label="整体匹配度">
+            <span id="overallMeter"></span>
+          </div>
+        </div>
+
+        <div class="toolbar" aria-label="职位筛选">
+          <div class="segmented-control" id="sortControl">
+            <button type="button" data-sort="score" class="active">匹配度</button>
+            <button type="button" data-sort="salary">薪资</button>
+            <button type="button" data-sort="experience">经验</button>
+          </div>
+          <label class="search-box">
+            <span aria-hidden="true">⌕</span>
+            <input id="keywordSearch" type="search" placeholder="搜索职位、公司或技能" />
+          </label>
+        </div>
+
+        <div id="jobList" class="job-list"></div>
+      </section>
+    </main>
+
+    <template id="jobCardTemplate">
+      <article class="job-card">
+        <div class="job-main">
+          <div>
+            <p class="company"></p>
+            <h3></h3>
+          </div>
+          <div class="score-badge"></div>
+        </div>
+        <div class="job-meta"></div>
+        <p class="reason"></p>
+        <div class="skill-row"></div>
+        <div class="card-footer">
+          <span class="salary"></span>
+          <button type="button">查看详情</button>
+        </div>
+      </article>
+    </template>
+
+    <dialog id="jobDetailDialog" class="detail-dialog">
+      <button id="closeDetail" class="icon-button" type="button" aria-label="关闭详情">×</button>
+      <div id="detailBody"></div>
+    </dialog>
+
+    <script src="script.js"></script>
+  </body>
+</html>
