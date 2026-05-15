@@ -3,16 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="智岗匹配是一款本地运行的岗位匹配工具，可按学历、专业、城市、薪资、技能和职业偏好推荐合适岗位。"
+    />
     <title>智岗匹配</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <main class="app-shell">
-      <section class="profile-panel" aria-label="候选人信息">
+      <aside class="profile-panel" aria-label="候选人条件">
         <div class="brand-row">
-          <div class="brand-mark" aria-hidden="true">
-            <span></span>
-          </div>
+          <div class="brand-mark" aria-hidden="true"><span></span></div>
           <div>
             <p class="eyebrow">Career Fit Engine</p>
             <h1>智岗匹配</h1>
@@ -40,7 +42,6 @@
               <label for="experience">工作年限</label>
               <input id="experience" name="experience" type="number" min="0" max="30" value="2" />
             </div>
-
             <div class="field-group">
               <label for="city">期望城市</label>
               <select id="city" name="city"></select>
@@ -59,90 +60,59 @@
                 <option value="35">35K+</option>
               </select>
             </div>
-
             <div class="field-group">
               <label for="industry">目标行业</label>
-              <select id="industry" name="industry">
-                <option value="不限">不限</option>
-                <option value="企业服务 / SaaS">企业服务 / SaaS</option>
-                <option value="人工智能">人工智能</option>
-                <option value="新零售">新零售</option>
-                <option value="金融">金融</option>
-                <option value="智能制造">智能制造</option>
-                <option value="工业互联网">工业互联网</option>
-                <option value="游戏 / 文娱">游戏 / 文娱</option>
-                <option value="教育科技">教育科技</option>
-                <option value="新能源">新能源</option>
-              </select>
+              <select id="industry" name="industry"></select>
             </div>
           </div>
 
           <fieldset>
             <legend>技能标签</legend>
-            <div class="tag-picker" id="skillPicker">
-              <label><input type="checkbox" value="JavaScript" checked />JavaScript</label>
-              <label><input type="checkbox" value="TypeScript" />TypeScript</label>
-              <label><input type="checkbox" value="Python" checked />Python</label>
-              <label><input type="checkbox" value="SQL" />SQL</label>
-              <label><input type="checkbox" value="机器学习" />机器学习</label>
-              <label><input type="checkbox" value="PyTorch" />PyTorch</label>
-              <label><input type="checkbox" value="产品分析" />产品分析</label>
-              <label><input type="checkbox" value="原型设计" />原型设计</label>
-              <label><input type="checkbox" value="接口测试" />接口测试</label>
-              <label><input type="checkbox" value="C/C++" />C/C++</label>
-              <label><input type="checkbox" value="沟通协作" />沟通协作</label>
-              <label><input type="checkbox" value="Figma" />Figma</label>
-              <label><input type="checkbox" value="财务建模" />财务建模</label>
-            </div>
+            <div class="tag-picker" id="skillPicker"></div>
           </fieldset>
 
           <fieldset>
             <legend>职业偏好</legend>
-            <div class="preference-grid">
-              <label><input type="checkbox" name="preference" value="技术成长" checked />技术成长</label>
-              <label><input type="checkbox" name="preference" value="数据驱动" />数据驱动</label>
-              <label><input type="checkbox" name="preference" value="业务挑战" />业务挑战</label>
-              <label><input type="checkbox" name="preference" value="稳定平台" />稳定平台</label>
-            </div>
+            <div class="preference-grid" id="preferencePicker"></div>
           </fieldset>
 
           <div class="live-status" aria-live="polite">
             <span aria-hidden="true"></span>
-            <p>筛选条件变更后会自动更新结果</p>
+            <p>条件变化后自动刷新匹配结果</p>
           </div>
         </form>
-      </section>
+      </aside>
 
-      <section class="results-panel" aria-label="匹配职位">
-        <div class="results-header">
+      <section class="results-panel" aria-label="匹配岗位">
+        <header class="results-header">
           <div>
-          <p class="eyebrow">Verified Search Workflow</p>
-          <h2>推荐职位</h2>
+            <p class="eyebrow">Personalized Recommendation</p>
+            <h2>推荐岗位</h2>
           </div>
           <div class="summary-card">
             <span id="matchCount">0</span>
-            <p>个硬性条件匹配</p>
+            <p>高匹配岗位</p>
           </div>
-        </div>
+        </header>
 
-        <div class="insight-strip" id="insightStrip">
+        <section class="insight-strip" aria-label="匹配画像">
           <div>
             <strong>匹配画像</strong>
-            <p id="profileInsight">正在分析你的学历、专业、经验与技能组合。</p>
+            <p id="profileInsight">正在分析学历、专业、经验与技能组合。</p>
           </div>
           <div class="meter" aria-label="整体匹配度">
             <span id="overallMeter"></span>
           </div>
-        </div>
+        </section>
 
-        <div class="stats-grid" aria-label="实时筛选数据">
+        <section class="stats-grid" aria-label="实时筛选数据">
           <div class="stat-card">
             <span id="totalJobs">0</span>
-            <p>职位样本</p>
+            <p>岗位样本</p>
           </div>
           <div class="stat-card">
             <span id="hardMatchJobs">0</span>
-            <p>硬性条件通过</p>
+            <p>硬性通过</p>
           </div>
           <div class="stat-card">
             <span id="visibleJobs">0</span>
@@ -150,21 +120,21 @@
           </div>
           <div class="stat-card">
             <span id="averageScore">0%</span>
-            <p>平均匹配度</p>
+            <p>平均匹配</p>
           </div>
-        </div>
+        </section>
 
         <div class="filter-readout" id="filterReadout" aria-live="polite"></div>
 
-        <div class="toolbar" aria-label="职位筛选">
-          <div class="segmented-control" id="sortControl">
+        <div class="toolbar" aria-label="岗位筛选">
+          <div class="segmented-control" id="sortControl" role="group" aria-label="排序方式">
             <button type="button" data-sort="score" class="active">匹配度</button>
             <button type="button" data-sort="salary">薪资</button>
             <button type="button" data-sort="experience">经验</button>
           </div>
           <label class="search-box">
             <span aria-hidden="true">⌕</span>
-            <input id="keywordSearch" type="search" placeholder="搜索职位、公司或技能" />
+            <input id="keywordSearch" type="search" placeholder="搜索岗位、公司、城市或技能" />
           </label>
         </div>
 

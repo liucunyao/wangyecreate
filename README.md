@@ -37,6 +37,29 @@ https://github.com/liucunyao/wangyecreate
 
 ## 本地预览
 
+推荐使用 Node 服务启动，这样页面会启用 `/api/jobs` 职位聚合接口：
+
+```powershell
+C:\Users\liucu\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe server.mjs
+```
+
+然后访问：
+
+```text
+http://127.0.0.1:8787/
+```
+
+如果你有 RapidAPI 的 JSearch 密钥，可以在启动前配置：
+
+```powershell
+$env:RAPIDAPI_KEY="你的密钥"
+C:\Users\liucu\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe server.mjs
+```
+
+没有 API 密钥时，系统会自动展示 BOSS 直聘、智联招聘、前程无忧、猎聘、拉勾招聘的实时检索入口，不会伪造外部网站职位详情。
+
+旧版静态服务仍可使用：
+
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File server.ps1 -Port 5173
 ```

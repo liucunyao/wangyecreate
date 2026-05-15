@@ -68,6 +68,37 @@ const cities = [
   "远程"
 ];
 
+const industries = [
+  "不限",
+  "企业服务 / SaaS",
+  "人工智能",
+  "新零售",
+  "金融",
+  "智能制造",
+  "工业互联网",
+  "游戏 / 文娱",
+  "教育科技",
+  "新能源"
+];
+
+const skills = [
+  "JavaScript",
+  "TypeScript",
+  "Python",
+  "SQL",
+  "机器学习",
+  "PyTorch",
+  "产品分析",
+  "原型设计",
+  "接口测试",
+  "C/C++",
+  "沟通协作",
+  "Figma",
+  "财务建模"
+];
+
+const preferences = ["技术成长", "数据驱动", "业务挑战", "稳定平台"];
+
 const jobs = [
   {
     id: "fe-saas-001",
@@ -147,7 +178,7 @@ const jobs = [
     skills: ["产品分析", "原型设计", "沟通协作", "SQL", "Figma"],
     preferences: ["业务挑战", "数据驱动"],
     responsibilities: ["负责客户需求调研和产品方案设计", "梳理权限、审批、报表等复杂业务流程", "推动研发、测试、交付节奏"],
-    requirements: ["有 B 端或后台产品经验", "能写清楚 PRD 和验收标准", "对数据和业务指标敏感"]
+    requirements: ["有 B 端或后台产品经验", "能写清晰 PRD 和验收标准", "对数据和业务指标敏感"]
   },
   {
     id: "finance-005",
@@ -243,7 +274,7 @@ const jobs = [
     industry: "智能制造",
     companySize: "100-499人",
     type: "全职",
-    majors: ["materials", "chemistry", "mechanical"],
+    majors: ["materials", "mechanical"],
     skills: ["材料表征", "实验设计", "数据分析", "沟通协作"],
     preferences: ["技术成长", "稳定平台"],
     responsibilities: ["负责高分子或复合材料配方验证", "设计实验方案并跟踪性能测试结果", "沉淀材料数据库和研发报告"],
@@ -349,12 +380,72 @@ const platformSearch = {
   boss: ({ title, city }) => `https://www.zhipin.com/web/geek/job?query=${encodeURIComponent(title)}&city=${encodeURIComponent(city)}`,
   zhilian: ({ title, city }) => `https://sou.zhaopin.com/?jl=${encodeURIComponent(city)}&kw=${encodeURIComponent(title)}`,
   job51: ({ title, city }) => `https://we.51job.com/pc/search?keyword=${encodeURIComponent(title)}&searchType=2&jobArea=${encodeURIComponent(city)}`,
-  liepin: ({ title, city }) => `https://www.liepin.com/zhaopin/?key=${encodeURIComponent(title)}&dq=${encodeURIComponent(city)}`
+  liepin: ({ title, city }) => `https://www.liepin.com/zhaopin/?key=${encodeURIComponent(title)}&dq=${encodeURIComponent(city)}`,
+  lagou: ({ title, city }) => `https://www.lagou.com/wn/jobs?pn=1&kd=${encodeURIComponent(title)}&city=${encodeURIComponent(city)}`
+};
+
+const platformLabels = {
+  boss: "BOSS 直聘",
+  zhilian: "智联招聘",
+  job51: "前程无忧",
+  liepin: "猎聘",
+  lagou: "拉勾招聘"
+};
+
+const majorCareerMap = {
+  "computer-software": ["前端开发工程师", "后端开发工程师", "全栈开发工程师", "Java 开发工程师", "软件测试工程师", "运维开发工程师"],
+  "computer-science": ["软件开发工程师", "算法工程师", "后端研发工程师", "云计算工程师", "数据开发工程师", "系统工程师"],
+  "network-security": ["网络安全工程师", "安全运营工程师", "渗透测试工程师", "安全开发工程师", "等保测评工程师"],
+  iot: ["物联网工程师", "嵌入式软件工程师", "硬件测试工程师", "边缘计算工程师", "IoT 平台工程师"],
+  ai: ["机器学习工程师", "算法工程师", "大模型应用工程师", "计算机视觉工程师", "NLP 算法工程师"],
+  "data-science": ["数据分析师", "数据开发工程师", "商业分析师", "BI 工程师", "数据产品经理", "数据挖掘工程师"],
+  statistics: ["数据分析师", "风控建模分析师", "量化研究助理", "统计分析师", "用户研究分析师"],
+  math: ["算法工程师", "数据分析师", "量化研究员", "运筹优化工程师", "数学建模工程师"],
+  "business-analytics": ["商业分析师", "经营分析师", "数据产品经理", "策略分析师", "用户增长分析师"],
+  finance: ["财务分析师", "金融产品经理", "风控分析师", "投资分析师", "行业研究员"],
+  accounting: ["会计专员", "财务分析专员", "审计助理", "税务专员", "资金专员"],
+  economics: ["行业研究员", "经营分析师", "市场研究分析师", "策略分析师", "投资分析助理"],
+  "business-admin": ["产品经理", "运营经理", "项目经理", "管培生", "商务拓展经理"],
+  marketing: ["增长运营", "市场营销专员", "品牌策划", "用户运营", "电商运营"],
+  hr: ["招聘专员", "HRBP", "人力资源专员", "组织发展专员", "薪酬绩效专员"],
+  "ux-design": ["交互设计师", "用户体验设计师", "产品设计师", "UI 设计师", "用户研究员"],
+  "visual-design": ["视觉设计师", "品牌设计师", "UI 设计师", "平面设计师", "电商设计师"],
+  "industrial-design": ["工业设计师", "产品设计师", "结构设计工程师", "CMF 设计师", "用户体验设计师"],
+  journalism: ["内容运营", "新媒体运营", "品牌策划", "文案策划", "公关传播专员"],
+  language: ["跨境电商运营", "外贸业务员", "海外市场专员", "本地化运营", "英语编辑"],
+  mechanical: ["机械工程师", "结构工程师", "工艺工程师", "设备工程师", "质量工程师"],
+  automation: ["自动化工程师", "电气工程师", "PLC 工程师", "机器人工程师", "测试工程师"],
+  electrical: ["电气工程师", "硬件工程师", "电力电子工程师", "测试工程师", "嵌入式工程师"],
+  materials: ["材料工程师", "材料研发工程师", "工艺工程师", "质量工程师", "新能源材料工程师"],
+  civil: ["土木工程师", "结构工程师", "施工员", "项目工程师", "造价工程师"],
+  medicine: ["临床研究助理", "医学专员", "医疗产品经理", "医药代表", "医学编辑"],
+  pharmacy: ["药物分析研究员", "药品注册专员", "临床监察员", "医药研发助理", "药剂师"],
+  education: ["课程顾问", "教研专员", "学习规划师", "教育产品经理", "培训讲师"],
+  psychology: ["用户研究员", "心理咨询助理", "HRBP", "人才测评顾问", "用户体验研究员"]
+};
+
+const skillCareerMap = {
+  JavaScript: ["前端开发工程师", "Web 前端工程师", "全栈开发工程师"],
+  TypeScript: ["前端开发工程师", "React 开发工程师", "Vue 开发工程师"],
+  Python: ["Python 开发工程师", "数据分析师", "自动化测试工程师"],
+  SQL: ["数据分析师", "BI 工程师", "数据开发工程师"],
+  机器学习: ["机器学习工程师", "算法工程师", "AI 应用工程师"],
+  PyTorch: ["深度学习工程师", "算法工程师", "大模型算法工程师"],
+  产品分析: ["产品经理", "数据产品经理", "商业分析师"],
+  原型设计: ["产品经理", "交互设计师", "用户体验设计师"],
+  接口测试: ["测试工程师", "自动化测试工程师", "测试开发工程师"],
+  "C/C++": ["C++ 开发工程师", "嵌入式软件工程师", "客户端开发工程师"],
+  沟通协作: ["项目经理", "产品经理", "运营经理"],
+  Figma: ["UI 设计师", "交互设计师", "产品设计师"],
+  财务建模: ["财务分析师", "投资分析师", "风控分析师"]
 };
 
 const form = document.querySelector("#profileForm");
 const majorSelect = document.querySelector("#major");
 const citySelect = document.querySelector("#city");
+const industrySelect = document.querySelector("#industry");
+const skillPicker = document.querySelector("#skillPicker");
+const preferencePicker = document.querySelector("#preferencePicker");
 const jobList = document.querySelector("#jobList");
 const template = document.querySelector("#jobCardTemplate");
 const matchCount = document.querySelector("#matchCount");
@@ -374,6 +465,7 @@ const closeDetail = document.querySelector("#closeDetail");
 let currentSort = "score";
 let scoredJobs = [];
 let currentProfile = null;
+let refreshToken = 0;
 
 function hydrateSelects() {
   majorSelect.innerHTML = Object.entries(majorGroups)
@@ -384,8 +476,25 @@ function hydrateSelects() {
     .join("");
 
   citySelect.innerHTML = cities.map((city) => `<option value="${city}">${city}</option>`).join("");
+  industrySelect.innerHTML = industries.map((industry) => `<option value="${industry}">${industry}</option>`).join("");
+
+  skillPicker.innerHTML = skills
+    .map((skill) => {
+      const checked = ["JavaScript", "Python"].includes(skill) ? " checked" : "";
+      return `<label><input type="checkbox" value="${skill}"${checked} />${skill}</label>`;
+    })
+    .join("");
+
+  preferencePicker.innerHTML = preferences
+    .map((preference) => {
+      const checked = preference === "技术成长" ? " checked" : "";
+      return `<label><input type="checkbox" name="preference" value="${preference}"${checked} />${preference}</label>`;
+    })
+    .join("");
+
   majorSelect.value = "computer-software";
   citySelect.value = "不限";
+  industrySelect.value = "不限";
 }
 
 function getProfile() {
@@ -404,7 +513,7 @@ function getProfile() {
 function getHardFilterStatus(job, profile) {
   const failed = [];
   if (educationRank[profile.education] < educationRank[job.education]) failed.push("学历未达最低要求");
-  if (profile.experience < job.minExperience) failed.push("工作年限低于岗位要求");
+  if (profile.experience < job.minExperience) failed.push("工作年限偏低");
   if (profile.city !== "不限" && profile.city !== job.city && job.city !== "远程") failed.push("城市不匹配");
   if (profile.salaryMin && job.salaryMax < profile.salaryMin) failed.push("薪资低于期望");
   if (profile.industry !== "不限" && profile.industry !== job.industry) failed.push("行业不匹配");
@@ -444,7 +553,7 @@ function calculateMatch(job, profile) {
   score += matchedPreferences.length * 5;
   if (matchedPreferences.length) reasons.push(`职业偏好契合：${matchedPreferences.join("、")}`);
 
-  if (profile.city === "不限" || profile.city === job.city) {
+  if (profile.city === "不限" || profile.city === job.city || job.city === "远程") {
     score += 6;
   }
 
@@ -455,6 +564,146 @@ function calculateMatch(job, profile) {
     reasons,
     matchedSkills
   };
+}
+
+function getMajorLabel(value) {
+  for (const options of Object.values(majorGroups)) {
+    const found = options.find(([itemValue]) => itemValue === value);
+    if (found) return found[1];
+  }
+  return value;
+}
+
+function getProfileTitles(profile) {
+  const titles = [
+    ...(majorCareerMap[profile.major] || []),
+    ...profile.skills.flatMap((skill) => skillCareerMap[skill] || [])
+  ];
+
+  if (profile.industry !== "不限") {
+    titles.push(`${profile.industry} 产品经理`, `${profile.industry} 运营`, `${profile.industry} 数据分析师`);
+  }
+
+  return [...new Set(titles)].slice(0, 18);
+}
+
+function getRecommendedSkills(profile, title) {
+  const base = profile.skills.length ? profile.skills : ["沟通协作"];
+  const titleSkills = [];
+  if (/前端|Web|React|Vue/.test(title)) titleSkills.push("JavaScript", "TypeScript", "React", "Vue");
+  if (/数据|BI|分析|算法|机器学习|大模型|AI/.test(title)) titleSkills.push("Python", "SQL", "机器学习", "数据分析");
+  if (/产品|交互|体验|设计/.test(title)) titleSkills.push("产品分析", "原型设计", "Figma", "沟通协作");
+  if (/测试|质量/.test(title)) titleSkills.push("Python", "接口测试", "SQL", "自动化测试");
+  if (/嵌入式|C\+\+|硬件|电气|自动化/.test(title)) titleSkills.push("C/C++", "Python", "Linux", "通信协议");
+  if (/财务|金融|投资|风控/.test(title)) titleSkills.push("Excel", "SQL", "财务建模", "数据分析");
+  if (/运营|市场|增长|内容/.test(title)) titleSkills.push("产品分析", "沟通协作", "SQL", "内容运营");
+  return [...new Set([...base, ...titleSkills])].slice(0, 6);
+}
+
+function estimateSalary(profile, title) {
+  const experience = profile.experience;
+  let min = profile.salaryMin || 8;
+  if (/算法|大模型|机器学习|量化/.test(title)) min = Math.max(min, 22 + experience * 2);
+  else if (/开发|工程师|数据|产品/.test(title)) min = Math.max(min, 14 + experience * 2);
+  else if (/设计|运营|市场|HR|招聘|财务/.test(title)) min = Math.max(min, 9 + experience);
+  const max = Math.round(min + 8 + Math.min(experience, 8) * 2);
+  return [Math.round(min), max];
+}
+
+function generatePlatformLeads(profile) {
+  const titles = getProfileTitles(profile);
+  const city = profile.city === "不限" ? "全国" : profile.city;
+  const platforms = Object.keys(platformSearch);
+  const majorLabel = getMajorLabel(profile.major);
+  const leads = [];
+
+  titles.forEach((title, index) => {
+    platforms.forEach((platform, platformIndex) => {
+      const [salaryMin, salaryMax] = estimateSalary(profile, title);
+      const score = Math.max(68, Math.min(97, 92 - Math.floor(index / 2) - platformIndex));
+      leads.push({
+        id: `platform-${platform}-${index}`,
+        origin: "platform",
+        platform,
+        title,
+        company: platformLabels[platform],
+        city,
+        district: "实时检索",
+        education: profile.education,
+        minExperience: Math.max(0, profile.experience - 1),
+        maxExperience: Math.max(profile.experience + 3, 3),
+        salaryMin,
+        salaryMax,
+        industry: profile.industry === "不限" ? "全行业" : profile.industry,
+        companySize: "来自招聘平台",
+        type: "外部职位线索",
+        majors: [profile.major],
+        skills: getRecommendedSkills(profile, title),
+        preferences: profile.preferences,
+        responsibilities: [
+          `根据「${majorLabel}、${city}、${profile.experience} 年经验、${profile.industry}」生成的招聘平台检索线索。`,
+          "点击后将跳转到对应招聘网站的实时搜索结果页，可查看最新在招公司、薪资和岗位描述。",
+          "不同招聘平台会根据登录状态、城市编码和推荐策略展示不同结果。"
+        ],
+        requirements: [
+          "请在招聘网站内核对岗位是否仍在招聘。",
+          "重点确认薪资范围、工作地点、学历、经验、技能栈和公司资质。",
+          "如果平台要求登录或验证码，请以平台页面展示为准。"
+        ],
+        score,
+        hardFailed: [],
+        reasons: [`已按专业方向生成「${title}」检索`, `覆盖 ${platformLabels[platform]} 实时招聘结果`, `匹配城市、经验、薪资和技能条件`],
+        matchedSkills: profile.skills,
+        url: platformSearch[platform]({ title, city })
+      });
+    });
+  });
+
+  return leads;
+}
+
+function getApiBase() {
+  if (location.protocol === "http:" || location.protocol === "https:") {
+    return location.origin;
+  }
+  return "http://127.0.0.1:8787";
+}
+
+function buildJobQuery(profile) {
+  const params = new URLSearchParams({
+    education: profile.education,
+    major: profile.major,
+    experience: String(profile.experience),
+    city: profile.city,
+    salaryMin: String(profile.salaryMin),
+    industry: profile.industry,
+    skills: profile.skills.join(","),
+    preferences: profile.preferences.join(",")
+  });
+  return params.toString();
+}
+
+async function fetchBackendJobs(profile) {
+  const controller = new AbortController();
+  const timer = window.setTimeout(() => controller.abort(), 2800);
+
+  try {
+    const response = await fetch(`${getApiBase()}/api/jobs?${buildJobQuery(profile)}`, {
+      signal: controller.signal,
+      cache: "no-store"
+    });
+    if (!response.ok) return [];
+    const payload = await response.json();
+    return Array.isArray(payload.jobs) ? payload.jobs : [];
+  } catch {
+    return [];
+  } finally {
+    window.clearTimeout(timer);
+  }
+}
+
+function isExternalJob(job) {
+  return job.origin === "platform" || job.origin === "api";
 }
 
 function renderJobs() {
@@ -475,7 +724,7 @@ function renderJobs() {
   jobList.innerHTML = "";
 
   if (!filtered.length) {
-    jobList.innerHTML = '<div class="empty-state">没有找到符合当前条件的职位，请调整城市、行业、技能或关键词。</div>';
+    jobList.innerHTML = '<div class="empty-state">没有找到符合当前条件的岗位，请调整城市、行业、技能或关键词。</div>';
     return;
   }
 
@@ -484,29 +733,42 @@ function renderJobs() {
   filtered.forEach((job) => {
     const card = template.content.cloneNode(true);
     const article = card.querySelector(".job-card");
+    const scoreBadge = card.querySelector(".score-badge");
     article.dataset.jobId = job.id;
     article.classList.toggle("is-limited", Boolean(job.hardFailed.length));
-    card.querySelector(".company").textContent = `${job.company} · ${job.industry}`;
+    article.classList.toggle("is-external", isExternalJob(job));
+    card.querySelector(".company").textContent =
+      isExternalJob(job) ? `${job.company} · ${job.industry} · 外部数据源` : `${job.company} · ${job.industry}`;
     card.querySelector("h3").textContent = job.title;
-    card.querySelector(".score-badge").textContent = job.hardFailed.length ? "需确认" : `${job.score}%`;
+    scoreBadge.textContent = job.origin === "api" ? "真实职位" : job.origin === "platform" ? "平台检索" : job.hardFailed.length ? "需确认" : `${job.score}%`;
+    scoreBadge.classList.toggle("is-warning", Boolean(job.hardFailed.length));
     card.querySelector(".job-meta").innerHTML = `
       <span>${job.city} ${job.district}</span>
       <span>${educationLabel[job.education]}及以上</span>
       <span>${job.minExperience}-${job.maxExperience} 年</span>
       <span>${job.companySize}</span>
     `;
-    card.querySelector(".reason").textContent = job.hardFailed.length
-      ? `硬性条件待确认：${job.hardFailed.join("、")}。`
-      : `${job.reasons.slice(0, 3).join("，")}。`;
-    card.querySelector(".skill-row").innerHTML = job.skills.map((skill) => `<span>${skill}</span>`).join("");
+    card.querySelector(".reason").textContent =
+      isExternalJob(job)
+        ? `${job.reasons.slice(0, 3).join("；")}。`
+        : job.hardFailed.length
+          ? `硬性条件待确认：${job.hardFailed.join("、")}。`
+          : `${job.reasons.slice(0, 3).join("；")}。`;
+    card.querySelector(".skill-row").innerHTML = job.skills
+      .map((skill) => `<span class="${job.matchedSkills.includes(skill) ? "is-hit" : ""}">${skill}</span>`)
+      .join("");
     card.querySelector(".salary").textContent = `${job.salaryMin}K-${job.salaryMax}K`;
-    card.querySelector("button").addEventListener("click", (event) => {
+    const actionButton = card.querySelector("button");
+    actionButton.textContent = isExternalJob(job) ? "查看原职位" : "查看详情";
+    actionButton.addEventListener("click", (event) => {
       event.stopPropagation();
+      if (isExternalJob(job) && job.url) {
+        window.open(job.url, "_blank", "noreferrer");
+        return;
+      }
       showDetail(job.id);
     });
-    article.addEventListener("click", (event) => {
-      if (!event.target.closest("a")) showDetail(job.id);
-    });
+    article.addEventListener("click", () => showDetail(job.id));
     fragment.appendChild(card);
   });
 
@@ -524,7 +786,7 @@ function updateStats(filtered, keyword) {
   const keywordText = keyword ? `关键词：${keyword}` : "无关键词";
 
   matchCount.textContent = highMatched.length;
-  totalJobs.textContent = jobs.length;
+  totalJobs.textContent = scoredJobs.length;
   hardMatchJobs.textContent = hardMatched.length;
   visibleJobs.textContent = filtered.length;
   averageScore.textContent = `${average}%`;
@@ -538,30 +800,42 @@ function updateInsights(profile) {
   const skillText = profile.skills.length ? profile.skills.slice(0, 4).join("、") : "尚未选择技能";
 
   overallMeter.style.width = `${average}%`;
-  profileInsight.textContent = `当前画像偏向 ${skillText}。系统先排除学历、经验、城市、薪资不符岗位，再按专业、技能和职业偏好评分；当前最高推荐为「${top.title}」。`;
+  profileInsight.textContent = `当前画像偏向 ${skillText}。系统会先推导适合的岗位方向，再生成 BOSS 直聘、智联、前程无忧、猎聘、拉勾等平台的实时检索入口；当前优先方向为「${top.title}」。`;
 }
 
-function refreshMatches() {
+async function refreshMatches() {
+  const token = ++refreshToken;
   const profile = getProfile();
   currentProfile = profile;
-  scoredJobs = jobs.map((job) => calculateMatch(job, profile)).sort((a, b) => {
+  const localJobs = jobs.map((job) => calculateMatch(job, profile));
+  const platformJobs = generatePlatformLeads(profile);
+  const sortJobs = (items) => items.sort((a, b) => {
+    if (isExternalJob(a) !== isExternalJob(b)) return isExternalJob(a) ? -1 : 1;
     if (a.hardFailed.length !== b.hardFailed.length) return a.hardFailed.length - b.hardFailed.length;
     return b.score - a.score;
   });
+
+  scoredJobs = sortJobs([...platformJobs, ...localJobs]);
+  updateInsights(profile);
+  renderJobs();
+
+  const backendJobs = await fetchBackendJobs(profile);
+  if (token !== refreshToken || !backendJobs.length) return;
+
+  scoredJobs = sortJobs([...backendJobs, ...localJobs]);
   updateInsights(profile);
   renderJobs();
 }
 
 function makePlatformLinks(job) {
+  if (isExternalJob(job) && job.url) {
+    const title = platformLabels[job.platform] || "招聘平台";
+    return `<a href="${job.url}" target="_blank" rel="noreferrer">打开${title}原始结果</a>`;
+  }
+
   return Object.entries(platformSearch)
     .map(([key, makeUrl]) => {
-      const labels = {
-        boss: "BOSS直聘核实",
-        zhilian: "智联招聘核实",
-        job51: "前程无忧核实",
-        liepin: "猎聘核实"
-      };
-      return `<a href="${makeUrl(job)}" target="_blank" rel="noreferrer">${labels[key]}</a>`;
+      return `<a href="${makeUrl(job)}" target="_blank" rel="noreferrer">${platformLabels[key]}核实</a>`;
     })
     .join("");
 }
@@ -576,7 +850,7 @@ function showDetail(jobId) {
         <p class="company">${job.company} · ${job.industry}</p>
         <h2>${job.title}</h2>
       </div>
-      <div class="score-badge">${job.hardFailed.length ? "需确认" : `${job.score}%`}</div>
+      <div class="score-badge ${job.hardFailed.length ? "is-warning" : ""}">${job.hardFailed.length ? "需确认" : `${job.score}%`}</div>
     </div>
     <div class="job-meta detail-meta">
       <span>${job.city} ${job.district}</span>
@@ -587,7 +861,7 @@ function showDetail(jobId) {
     </div>
     <section>
       <h3>匹配判断</h3>
-      <p>${job.hardFailed.length ? `以下硬性条件需要确认：${job.hardFailed.join("、")}。` : job.reasons.join("，") + "。"}</p>
+      <p>${job.hardFailed.length ? `以下硬性条件需要确认：${job.hardFailed.join("、")}。` : `${job.reasons.join("；")}。`}</p>
     </section>
     <section>
       <h3>岗位职责</h3>
@@ -599,11 +873,11 @@ function showDetail(jobId) {
     </section>
     <section>
       <h3>技能标签</h3>
-      <div class="skill-row">${job.skills.map((skill) => `<span>${skill}</span>`).join("")}</div>
+      <div class="skill-row">${job.skills.map((skill) => `<span class="${job.matchedSkills.includes(skill) ? "is-hit" : ""}">${skill}</span>`).join("")}</div>
     </section>
     <section>
       <h3>招聘平台核实</h3>
-      <p class="verify-note">点击后会带着职位名和城市跳转到对应招聘平台搜索页，用于核对真实在招岗位、薪资、学历和经验要求。</p>
+      <p class="verify-note">点击后会带着岗位名和城市跳转到对应招聘平台搜索页，用于核对真实在招岗位、薪资、学历和经验要求。</p>
       <div class="platform-links">${makePlatformLinks(job)}</div>
     </section>
   `;
